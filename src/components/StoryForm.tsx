@@ -92,10 +92,10 @@ export default function StoryForm({ onSuccess, story }: StoryFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-8 max-w-3xl mx-auto">
-      <div className="flex items-center gap-3 mb-6">
+  <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-4 sm:p-8 max-w-3xl mx-auto w-full">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
         <Heart className="w-8 h-8 text-rose-500" fill="currentColor" />
-        <h2 className="text-3xl font-bold text-gray-800">
+        <h2 className="text-xl sm:text-3xl font-bold text-gray-800 break-words">
           {story ? 'Edit Your Love Story' : 'Share Your Love Story'}
         </h2>
       </div>
@@ -106,7 +106,7 @@ export default function StoryForm({ onSuccess, story }: StoryFormProps) {
         </div>
       )}
 
-      <div className="space-y-6">
+  <div className="space-y-4 sm:space-y-6">
         <div>
           <label htmlFor="title" className="block text-sm font-semibold text-gray-700 mb-2">
             Story Title
@@ -117,7 +117,7 @@ export default function StoryForm({ onSuccess, story }: StoryFormProps) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Give your love story a beautiful title..."
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none transition"
+            className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none transition text-base sm:text-lg"
             required
             disabled={isSubmitting}
           />
@@ -133,7 +133,7 @@ export default function StoryForm({ onSuccess, story }: StoryFormProps) {
             value={authorName}
             onChange={(e) => setAuthorName(e.target.value)}
             placeholder="Enter your name..."
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none transition"
+            className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none transition text-base sm:text-lg"
             required
             disabled={isSubmitting}
           />
@@ -148,7 +148,7 @@ export default function StoryForm({ onSuccess, story }: StoryFormProps) {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Tell us your beautiful love story... How did you meet? What makes your relationship special?"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none transition resize-none"
+            className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none transition resize-none text-base sm:text-lg"
             rows={12}
             required
             disabled={isSubmitting}
@@ -158,7 +158,7 @@ export default function StoryForm({ onSuccess, story }: StoryFormProps) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-gradient-to-r from-rose-500 to-pink-600 text-white font-semibold py-4 px-6 rounded-lg hover:from-rose-600 hover:to-pink-700 transition duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full bg-gradient-to-r from-rose-500 to-pink-600 text-white font-semibold py-3 sm:py-4 px-4 sm:px-6 rounded-lg hover:from-rose-600 hover:to-pink-700 transition duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-base sm:text-lg"
         >
           {isSubmitting ? (
             <>

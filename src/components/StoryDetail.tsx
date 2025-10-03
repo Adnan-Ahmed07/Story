@@ -102,17 +102,17 @@ export default function StoryDetail({ storyId, onBack }: StoryDetailProps) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
+  <div className="max-w-4xl mx-auto px-2 sm:px-4 md:px-8">
       <button
         onClick={onBack}
-        className="flex items-center gap-2 text-gray-600 hover:text-rose-600 mb-6 transition font-medium"
+          className="flex items-center gap-2 text-gray-600 hover:text-rose-600 mb-4 sm:mb-6 transition font-medium text-base sm:text-lg"
       >
         <ArrowLeft className="w-5 h-5" />
         Back to Stories
       </button>
 
       {editing ? (
-        <div className="mb-8">
+  <div className="mb-6 sm:mb-8">
           <StoryForm
             story={story}
             onSuccess={async () => {
@@ -129,13 +129,13 @@ export default function StoryDetail({ storyId, onBack }: StoryDetailProps) {
         </div>
       ) : (
         <>
-          <article className="bg-white rounded-xl shadow-lg p-8 md:p-12 mb-8">
-            <div className="flex items-center gap-3 mb-4">
+          <article className="bg-white rounded-xl shadow-lg p-4 sm:p-8 md:p-12 mb-6 sm:mb-8">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 mb-4">
               <Heart className="w-8 h-8 text-rose-500" fill="currentColor" />
-              <h1 className="text-4xl font-bold text-gray-800 leading-tight">{story.title}</h1>
+              <h1 className="text-2xl sm:text-4xl font-bold text-gray-800 leading-tight break-words">{story.title}</h1>
             </div>
 
-            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-8 pb-6 border-b border-gray-200">
+            <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-gray-200">
               <div className="flex items-center gap-2">
                 <span className="font-medium text-rose-600">by {story.author_name}</span>
               </div>
@@ -148,13 +148,13 @@ export default function StoryDetail({ storyId, onBack }: StoryDetailProps) {
               </div>
             </div>
 
-            <div className="prose prose-lg max-w-none">
-              <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{story.content}</p>
+            <div className="prose prose-base sm:prose-lg max-w-none">
+              <p className="text-gray-700 leading-relaxed whitespace-pre-wrap break-words">{story.content}</p>
             </div>
 
             <button
               onClick={() => setEditing(true)}
-              className="mt-6 px-6 py-2 rounded bg-rose-500 hover:bg-rose-600 text-white font-semibold shadow"
+              className="mt-4 sm:mt-6 px-4 sm:px-6 py-2 rounded bg-rose-500 hover:bg-rose-600 text-white font-semibold shadow w-full sm:w-auto"
             >
               Edit Story
             </button>
