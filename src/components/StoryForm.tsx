@@ -83,9 +83,7 @@ export default function StoryForm({ onSuccess }: StoryFormProps) {
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none transition"
             required
             disabled={isSubmitting}
-            maxLength={200}
           />
-          <p className="mt-1 text-sm text-gray-500">{title.length}/200 characters</p>
         </div>
 
         <div>
@@ -101,7 +99,6 @@ export default function StoryForm({ onSuccess }: StoryFormProps) {
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none transition"
             required
             disabled={isSubmitting}
-            maxLength={100}
           />
         </div>
 
@@ -118,9 +115,7 @@ export default function StoryForm({ onSuccess }: StoryFormProps) {
             rows={12}
             required
             disabled={isSubmitting}
-            maxLength={10000}
           />
-          <p className="mt-1 text-sm text-gray-500">{content.length}/10000 characters</p>
         </div>
 
         <button
