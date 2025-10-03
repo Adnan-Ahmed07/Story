@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { supabase, type Story, type Comment } from '../lib/supabase';
 import CommentSection from './CommentSection';
+import StoryForm from './StoryForm';
 import { ArrowLeft, Heart, Calendar, Loader2 } from 'lucide-react';
+
 
 interface StoryDetailProps {
   storyId: string;
@@ -13,6 +15,7 @@ export default function StoryDetail({ storyId, onBack }: StoryDetailProps) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     fetchStoryAndComments();
@@ -108,35 +111,62 @@ export default function StoryDetail({ storyId, onBack }: StoryDetailProps) {
         Back to Stories
       </button>
 
-      <article className="bg-white rounded-xl shadow-lg p-8 md:p-12 mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <Heart className="w-8 h-8 text-rose-500" fill="currentColor" />
-          <h1 className="text-4xl font-bold text-gray-800 leading-tight">{story.title}</h1>
+      {editing ? (
+        <div className="mb-8">
+          <StoryForm
+            story={story}
+            onSuccess={async () => {
+              setEditing(false);
+              await fetchStoryAndComments();
+            }}
+          />
+          <button
+            onClick={() => setEditing(false)}
+            className="mt-4 px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-700"
+          >
+            Cancel
+          </button>
         </div>
+      ) : (
+        <>
+          <article className="bg-white rounded-xl shadow-lg p-8 md:p-12 mb-8">
+            <div className="flex items-center gap-3 mb-4">
+              <Heart className="w-8 h-8 text-rose-500" fill="currentColor" />
+              <h1 className="text-4xl font-bold text-gray-800 leading-tight">{story.title}</h1>
+            </div>
 
-        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-8 pb-6 border-b border-gray-200">
-          <div className="flex items-center gap-2">
-            <span className="font-medium text-rose-600">by {story.author_name}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Calendar className="w-4 h-4" />
-            <span>{formatDate(story.created_at)}</span>
-          </div>
-          <div>
-            <span>{estimateReadTime(story.content)} min read</span>
-          </div>
-        </div>
+            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-8 pb-6 border-b border-gray-200">
+              <div className="flex items-center gap-2">
+                <span className="font-medium text-rose-600">by {story.author_name}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Calendar className="w-4 h-4" />
+                <span>{formatDate(story.created_at)}</span>
+              </div>
+              <div>
+                <span>{estimateReadTime(story.content)} min read</span>
+              </div>
+            </div>
 
-        <div className="prose prose-lg max-w-none">
-          <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{story.content}</p>
-        </div>
-      </article>
+            <div className="prose prose-lg max-w-none">
+              <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{story.content}</p>
+            </div>
 
-      <CommentSection
-        storyId={storyId}
-        comments={comments}
-        onCommentAdded={handleCommentAdded}
-      />
+            <button
+              onClick={() => setEditing(true)}
+              className="mt-6 px-6 py-2 rounded bg-rose-500 hover:bg-rose-600 text-white font-semibold shadow"
+            >
+              Edit Story
+            </button>
+          </article>
+
+          <CommentSection
+            storyId={storyId}
+            comments={comments}
+            onCommentAdded={handleCommentAdded}
+          />
+        </>
+      )}
     </div>
   );
 }

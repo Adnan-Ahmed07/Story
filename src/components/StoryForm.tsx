@@ -1,17 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { Heart, Loader2 } from 'lucide-react';
 
+
+
+type Story = {
+  id: string;
+  title: string;
+  content: string;
+  author_name: string;
+};
+
 interface StoryFormProps {
   onSuccess: () => void;
+  story?: Story;
 }
 
-export default function StoryForm({ onSuccess }: StoryFormProps) {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [authorName, setAuthorName] = useState('');
+
+export default function StoryForm({ onSuccess, story }: StoryFormProps) {
+  const [title, setTitle] = useState(story ? story.title : '');
+  const [content, setContent] = useState(story ? story.content : '');
+  const [authorName, setAuthorName] = useState(story ? story.author_name : '');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (story) {
+      setTitle(story.title);
+      setContent(story.content);
+      setAuthorName(story.author_name);
+    }
+  }, [story]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,13 +54,29 @@ export default function StoryForm({ onSuccess }: StoryFormProps) {
     setIsSubmitting(true);
 
     try {
-      const { error: submitError } = await supabase.from('stories').insert([
-        {
-          title: title.trim(),
-          content: content.trim(),
-          author_name: authorName.trim(),
-        },
-      ]);
+      let submitError;
+      if (story) {
+        // Edit mode: update existing story
+        const { error } = await supabase
+          .from('stories')
+          .update({
+            title: title.trim(),
+            content: content.trim(),
+            author_name: authorName.trim(),
+          })
+          .eq('id', story.id);
+        submitError = error;
+      } else {
+        // Create mode: insert new story
+        const { error } = await supabase.from('stories').insert([
+          {
+            title: title.trim(),
+            content: content.trim(),
+            author_name: authorName.trim(),
+          },
+        ]);
+        submitError = error;
+      }
 
       if (submitError) throw submitError;
 
@@ -60,7 +95,9 @@ export default function StoryForm({ onSuccess }: StoryFormProps) {
     <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-8 max-w-3xl mx-auto">
       <div className="flex items-center gap-3 mb-6">
         <Heart className="w-8 h-8 text-rose-500" fill="currentColor" />
-        <h2 className="text-3xl font-bold text-gray-800">Share Your Love Story</h2>
+        <h2 className="text-3xl font-bold text-gray-800">
+          {story ? 'Edit Your Love Story' : 'Share Your Love Story'}
+        </h2>
       </div>
 
       {error && (
@@ -126,12 +163,12 @@ export default function StoryForm({ onSuccess }: StoryFormProps) {
           {isSubmitting ? (
             <>
               <Loader2 className="w-5 h-5 animate-spin" />
-              Sharing Your Story...
+              {story ? 'Updating Your Story...' : 'Sharing Your Story...'}
             </>
           ) : (
             <>
               <Heart className="w-5 h-5" />
-              Share Love Story
+              {story ? 'Update Love Story' : 'Share Love Story'}
             </>
           )}
         </button>
